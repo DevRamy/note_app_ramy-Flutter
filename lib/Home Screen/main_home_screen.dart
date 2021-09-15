@@ -68,12 +68,49 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15.0, vertical: 15.0),
                         child: RawMaterialButton(
+                          // Todo: Delete Note Button
+                          onLongPress: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                // ignore: prefer_const_constructors
+                                return AlertDialog(
+                                  // ignore: prefer_const_constructors
+                                  title: Text('Delete Note!'),
+                                  // ignore: prefer_const_constructors
+                                  content: Text(
+                                      'Would you like to delete of this Note?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      // ignore: prefer_const_constructors
+                                      child: Text('Yes'),
+                                      onPressed: () async {
+                                        await DBProvider.db
+                                            .deleteNote(indexNote.id());
+                                        getAllNoteFromDatabase();
+                                        setState(() {});
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      // ignore: prefer_const_constructors
+                                      child: Text('No'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
                           // Todo: Edit Note Button
                           onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => NoteScreen(
+                                  id: indexNote.id(),
                                   dateTime: indexNote.dateTime(),
                                   title: indexNote.title(),
                                   noteBody: indexNote.noteBody(),

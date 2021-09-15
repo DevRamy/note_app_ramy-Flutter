@@ -42,14 +42,14 @@ class DBProvider {
     await db.insert('Note', note.toJson());
   }
 
-  Future<void> updateNote(Note note) async {
+  Future<void> updateNote(int id, Note note) async {
     final db = await database;
 
     await db.update(
       'Note',
       note.toJson(),
       where: 'id = ?',
-      whereArgs: [note.id],
+      whereArgs: [id],
     );
   }
 

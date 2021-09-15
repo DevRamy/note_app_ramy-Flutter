@@ -23,13 +23,12 @@ class Note {
       );
 
   Map<String, Object?> toJson() => {
-        'id': _id,
         'dateTime': _dateTime,
         'title': _title,
         'noteBody': _noteBody,
       };
 
-  int? id() => _id;
+  int id() => _id!;
   String dateTime() => _dateTime;
   String title() => _title;
   String noteBody() => _noteBody;

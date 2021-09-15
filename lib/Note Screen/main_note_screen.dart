@@ -4,16 +4,16 @@ import 'package:note_app_ramy/Database/note_class.dart';
 import 'package:note_app_ramy/Database/sql_database.dart';
 
 class NoteScreen extends StatefulWidget {
+  int id;
   String title;
   String noteBody;
   String dateTime;
 
   NoteScreen(
-      {Key? key,
+      {required this.id,
       required this.title,
       required this.noteBody,
-      required this.dateTime})
-      : super(key: key);
+      required this.dateTime});
 
   @override
   _NoteScreenState createState() => _NoteScreenState();
@@ -21,8 +21,6 @@ class NoteScreen extends StatefulWidget {
 
 class _NoteScreenState extends State<NoteScreen> {
   double currentSliderValue = 18;
-  String? title;
-  String? noteBody;
   bool saveButtonIsVisible = false;
   @override
   Widget build(BuildContext context) {
@@ -89,7 +87,7 @@ class _NoteScreenState extends State<NoteScreen> {
                               saveButtonIsVisible = true;
                             });
                           }
-                          title = value;
+                          widget.title = value;
                         },
                       ),
                       //Todo : Note Body
@@ -116,7 +114,7 @@ class _NoteScreenState extends State<NoteScreen> {
                                 saveButtonIsVisible = true;
                               });
                             }
-                            noteBody = value;
+                            widget.noteBody = value;
                           },
                         ),
                       ),
@@ -139,12 +137,18 @@ class _NoteScreenState extends State<NoteScreen> {
               ],
             ),
             onPressed: () async {
-              await DBProvider.db.updateNote(
-                Note(
-                    dateTime: widget.dateTime,
-                    title: title ?? widget.title,
-                    noteBody: noteBody ?? widget.noteBody),
-              );
+              try {
+                await DBProvider.db.updateNote(
+                  widget.id,
+                  Note(
+                      dateTime: widget.dateTime,
+                      title: widget.title,
+                      noteBody: widget.noteBody),
+                );
+              } catch (e) {
+                print(e);
+              }
+
               Navigator.pop(context);
             },
           ),
