@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:note_app_ramy/Constant/constant_colors.dart';
 import 'package:note_app_ramy/Database/helper_methods.dart';
 import 'package:note_app_ramy/Database/note_class.dart';
-import 'package:note_app_ramy/Home%20Screen/main_home_screen.dart';
 
 class AddNoteScreen extends StatefulWidget {
   @override
@@ -88,7 +87,6 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                           // ignore: prefer_const_constructors
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: "your note",
                           ),
                           style:
                               // ignore: prefer_const_constructors
