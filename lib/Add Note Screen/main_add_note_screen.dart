@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:note_app_ramy/Constant/constant_colors.dart';
+import 'package:note_app_ramy/Database/helper_methods.dart';
+import 'package:note_app_ramy/Database/note_class.dart';
+import 'package:note_app_ramy/Home%20Screen/main_home_screen.dart';
 
 class AddNoteScreen extends StatefulWidget {
   @override
@@ -7,6 +11,11 @@ class AddNoteScreen extends StatefulWidget {
 }
 
 class _AddNoteScreenState extends State<AddNoteScreen> {
+  double currentSliderValue = 18;
+  String dateTime =
+      DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now()).toString();
+  String? title;
+  String? noteBody;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -14,48 +23,91 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: kThemColor,
-          title: const Center(
+          // ignore: prefer_const_constructors
+          title: Center(
+            // ignore: prefer_const_constructors
             child: Text("Add new Note"),
           ),
         ),
         body: Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.0),
           color: kThemColor,
-          child: Container(
-            padding: const EdgeInsets.all(8.0),
-            decoration: const BoxDecoration(
-              color: kBlueNote,
-              borderRadius: BorderRadius.all(
-                Radius.circular(18),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Slider(
+                  value: currentSliderValue,
+                  min: 18,
+                  max: 100,
+                  divisions: 10,
+                  label: currentSliderValue.round().toString(),
+                  onChanged: (double value) {
+                    setState(() {
+                      currentSliderValue = value;
+                    });
+                  },
+                ),
               ),
-            ),
-            child: Column(
-              children: const <Widget>[
-                //Todo : Note Title
-                TextField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Note Title",
-                  ),
-                  style: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold),
-                ),
-                //Todo : Note Body
-                Expanded(
-                  child: TextField(
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "your note",
+              Expanded(
+                flex: 10,
+                child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  // ignore: prefer_const_constructors
+                  decoration: BoxDecoration(
+                    color: kBlueNote,
+                    // ignore: prefer_const_constructors
+                    borderRadius: BorderRadius.all(
+                      // ignore: prefer_const_constructors
+                      Radius.circular(18),
                     ),
-                    style:
-                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      //Todo : Note Title
+                      TextField(
+                        // ignore: prefer_const_constructors
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Note Title",
+                        ),
+                        // ignore: prefer_const_constructors
+                        style: TextStyle(
+                            fontSize: 32.0, fontWeight: FontWeight.bold),
+                        onChanged: (value) {
+                          title = value;
+                        },
+                      ),
+                      //Todo : Note Body
+                      // ignore: prefer_const_constructors
+                      Expanded(
+                        // ignore: prefer_const_constructors
+                        child: TextField(
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          // ignore: prefer_const_constructors
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "your note",
+                          ),
+                          style:
+                              // ignore: prefer_const_constructors
+                              TextStyle(
+                                  fontSize: currentSliderValue,
+                                  fontWeight: FontWeight.bold),
+                          onChanged: (value) {
+                            noteBody = value;
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
+        // Todo: Save Note Button
         floatingActionButton: FloatingActionButton.extended(
           label: Row(
             children: const [
@@ -64,7 +116,12 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
               Text("Save Note"),
             ],
           ),
-          onPressed: () {},
+          onPressed: () {
+            allNote.add(
+              Note(dateTime: dateTime, title: title!, noteBody: noteBody!),
+            );
+            Navigator.pop(context);
+          },
         ),
       ),
     );
