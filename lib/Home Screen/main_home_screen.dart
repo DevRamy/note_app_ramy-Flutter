@@ -68,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15.0, vertical: 15.0),
                         child: RawMaterialButton(
+                          // Todo: Edit Note Button
                           onPressed: () {
                             Navigator.push(
                               context,

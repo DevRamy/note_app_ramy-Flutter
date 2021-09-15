@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_app_ramy/Constant/constant_colors.dart';
+import 'package:note_app_ramy/Database/note_class.dart';
+import 'package:note_app_ramy/Database/sql_database.dart';
 
 class NoteScreen extends StatefulWidget {
   String title;
@@ -7,7 +9,11 @@ class NoteScreen extends StatefulWidget {
   String dateTime;
 
   NoteScreen(
-      {required this.title, required this.noteBody, required this.dateTime});
+      {Key? key,
+      required this.title,
+      required this.noteBody,
+      required this.dateTime})
+      : super(key: key);
 
   @override
   _NoteScreenState createState() => _NoteScreenState();
@@ -32,7 +38,7 @@ class _NoteScreenState extends State<NoteScreen> {
           ),
         ),
         body: Container(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           color: kThemColor,
           child: Column(
             children: [
@@ -54,7 +60,7 @@ class _NoteScreenState extends State<NoteScreen> {
               Expanded(
                 flex: 10,
                 child: Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   // ignore: prefer_const_constructors
                   decoration: BoxDecoration(
                     color: kBlueNote,
@@ -78,8 +84,12 @@ class _NoteScreenState extends State<NoteScreen> {
                         style: TextStyle(
                             fontSize: 32.0, fontWeight: FontWeight.bold),
                         onChanged: (value) {
+                          if (!saveButtonIsVisible) {
+                            setState(() {
+                              saveButtonIsVisible = true;
+                            });
+                          }
                           title = value;
-                          saveButtonIsVisible == false ? true : null;
                         },
                       ),
                       //Todo : Note Body
@@ -101,6 +111,11 @@ class _NoteScreenState extends State<NoteScreen> {
                                   fontSize: currentSliderValue,
                                   fontWeight: FontWeight.bold),
                           onChanged: (value) {
+                            if (!saveButtonIsVisible) {
+                              setState(() {
+                                saveButtonIsVisible = true;
+                              });
+                            }
                             noteBody = value;
                           },
                         ),
@@ -123,7 +138,15 @@ class _NoteScreenState extends State<NoteScreen> {
                 Text("Save Changes"),
               ],
             ),
-            onPressed: () {},
+            onPressed: () async {
+              await DBProvider.db.updateNote(
+                Note(
+                    dateTime: widget.dateTime,
+                    title: title ?? widget.title,
+                    noteBody: noteBody ?? widget.noteBody),
+              );
+              Navigator.pop(context);
+            },
           ),
         ),
       ),
