@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_app_ramy/Add%20Note%20Screen/main_add_note_screen.dart';
 import 'package:note_app_ramy/Note%20Screen/main_note_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,9 +20,23 @@ class _HomeScreenState extends State<HomeScreen> {
             color: Colors.red,
           ),
         ),
+        //Todo: Add New Note Button
         floatingActionButton: FloatingActionButton.extended(
-          label: const Text("Add Note"),
-          onPressed: () {},
+          label: Row(
+            children: const [
+              Icon(Icons.edit, color: Colors.white, size: 20),
+              SizedBox(width: 5),
+              Text("Add Note"),
+            ],
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddNoteScreen(),
+              ),
+            );
+          },
         ),
       ),
     );
