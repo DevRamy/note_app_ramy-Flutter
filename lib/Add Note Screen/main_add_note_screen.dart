@@ -64,14 +64,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
               Text("Save Note"),
             ],
           ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AddNoteScreen(),
-              ),
-            );
-          },
+          onPressed: () {},
         ),
       ),
     );
