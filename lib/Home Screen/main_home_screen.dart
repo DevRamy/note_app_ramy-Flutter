@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_app_ramy/Add%20Note%20Screen/main_add_note_screen.dart';
+import 'package:note_app_ramy/Constant/constant_colors.dart';
 import 'package:note_app_ramy/Note%20Screen/main_note_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,11 +14,15 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("All Note"),
+          automaticallyImplyLeading: false,
+          backgroundColor: kThemColor,
+          title: const Center(
+            child: Text("All Note"),
+          ),
         ),
         body: Center(
           child: Container(
-            color: Colors.red,
+            color: kThemColor,
           ),
         ),
         //Todo: Add New Note Button
