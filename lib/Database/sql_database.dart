@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:note_app_ramy/Database/helper_methods.dart';
 import 'package:note_app_ramy/Database/note_class.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -35,13 +36,13 @@ class DBProvider {
     });
   }
 
-  Future<void> createCategory(Note note) async {
+  Future<void> createNote(Note note) async {
     final db = await database;
 
     await db.insert('Note', note.toJson());
   }
 
-  Future<void> updateCategory(Note note) async {
+  Future<void> updateNote(Note note) async {
     final db = await database;
 
     await db.update(
@@ -52,7 +53,7 @@ class DBProvider {
     );
   }
 
-  Future<void> deleteCategory(int id) async {
+  Future<void> deleteNote(int id) async {
     final db = await database;
 
     await db.delete(
@@ -63,8 +64,15 @@ class DBProvider {
   }
 
   /// get all note
-  Future<void> getAllCategories(BuildContext context) async {
+  Future<void> getAllNote() async {
+    print('getAllNote executed');
     final db = await database;
     var res = await db.query("Note");
+
+    allNote = [];
+
+    res.forEach((element) {
+      allNote.add(Note.fromJson(element));
+    });
   }
 }

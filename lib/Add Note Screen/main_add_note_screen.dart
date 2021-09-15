@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_app_ramy/Constant/constant_colors.dart';
-import 'package:note_app_ramy/Database/helper_methods.dart';
 import 'package:note_app_ramy/Database/note_class.dart';
+import 'package:note_app_ramy/Database/sql_database.dart';
 
 class AddNoteScreen extends StatefulWidget {
   @override
@@ -87,6 +87,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                           // ignore: prefer_const_constructors
                           decoration: InputDecoration(
                             border: InputBorder.none,
+                            hintText: "your Note",
                           ),
                           style:
                               // ignore: prefer_const_constructors
@@ -114,10 +115,9 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
               Text("Save Note"),
             ],
           ),
-          onPressed: () {
-            allNote.add(
-              Note(dateTime: dateTime, title: title!, noteBody: noteBody!),
-            );
+          onPressed: () async {
+            await DBProvider.db.createNote(
+                Note(dateTime: dateTime, title: title!, noteBody: noteBody!));
             Navigator.pop(context);
           },
         ),
