@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:note_app_ramy/Add%20Note%20Screen/main_add_note_screen.dart';
 import 'package:note_app_ramy/Constant/constant_colors.dart';
 import 'package:note_app_ramy/Database/helper_methods.dart';
@@ -46,9 +47,93 @@ class _HomeScreenState extends State<HomeScreen> {
             IconButton(
               icon: Icon(Icons.settings, size: 30),
               onPressed: () async {
-                // await DBProvider.db.getAllNote();
-                // setState(() {});
-                // multiScreen = !multiScreen ? true : false;
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                      child: Container(
+                          margin: EdgeInsets.all(10.0),
+                          height: 200,
+                          decoration: BoxDecoration(
+                            color: Colors.white10,
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: LayoutBuilder(
+                            builder: (context, constrains) {
+                              double alertWidth = constrains.maxWidth;
+                              double alertHeight = constrains.maxHeight;
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                // ignore: prefer_const_literals_to_create_immutables
+                                children: [
+                                  Text(
+                                    'View Mode',
+                                    style: TextStyle(
+                                        fontSize: 25.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      // Todo : One Page View
+                                      GestureDetector(
+                                        child: Container(
+                                          width: alertWidth / 2.5,
+                                          height: alertHeight * 0.8,
+                                          padding: EdgeInsets.all(4.0),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            color: !multiScreen
+                                                ? Colors.grey
+                                                : Colors.white,
+                                          ),
+                                          child: Image.asset(
+                                              'images/one note page.png'),
+                                        ),
+                                        onTap: () async {
+                                          await DBProvider.db.getAllNote();
+                                          multiScreen = false;
+                                          setState(() {});
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      // Todo : Multi Page View
+                                      GestureDetector(
+                                        child: Container(
+                                          width: alertWidth / 2.5,
+                                          height: alertHeight * 0.8,
+                                          padding: EdgeInsets.all(4.0),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            color: multiScreen
+                                                ? Colors.grey
+                                                : Colors.white,
+                                          ),
+                                          child: Image.asset(
+                                              'images/multi note.png'),
+                                        ),
+                                        onTap: () async {
+                                          await DBProvider.db.getAllNote();
+                                          multiScreen = true;
+                                          setState(() {});
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              );
+                            },
+                          )),
+                    );
+                  },
+                );
               },
             ),
           ],
@@ -149,8 +234,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               child: LayoutBuilder(
                                 builder: (context, constrains) {
-                                  double layoutWidth = constrains.maxWidth;
-                                  double layoutHieght = constrains.maxHeight;
                                   return Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -202,76 +285,82 @@ class _HomeScreenState extends State<HomeScreen> {
                   visible: !multiScreen,
                   child: Expanded(
                     child: Container(
-                      margin: EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(18),
-                            topRight: Radius.circular(18)),
-                        color: kBlueNote,
+                      margin: EdgeInsets.only(
+                        top: 8.0,
+                        left: 8.0,
+                        right: 8.0,
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Expanded(
-                          child: StaggeredGridView.countBuilder(
-                            crossAxisCount: 1,
+                      decoration: BoxDecoration(
+                        color: kThemColor,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(18.0),
+                          topRight: Radius.circular(18.0),
+                        ),
+                      ),
+                      child: LayoutBuilder(
+                        builder: (context, constrains) {
+                          double layoutWidth = constrains.maxWidth;
+                          double layoutHeight = constrains.maxHeight;
+                          return ListView.builder(
                             itemCount: allNote.length,
                             itemBuilder: (context, index) {
                               var indexNote = allNote[index];
                               return Container(
-                                padding: EdgeInsets.all(8.0),
-                                width: 200,
-                                height: currentSliderValue * 10,
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 5.0, vertical: 15.0),
+                                width: layoutWidth,
+                                height: layoutHeight,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(18),
                                   color: kBlueNote,
+                                  borderRadius: BorderRadius.circular(18.0),
                                 ),
                                 child: Column(
-                                  children: <Widget>[
-                                    //Todo : Note Title
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 2.0),
-                                      child: Expanded(
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Text(
-                                            'Title: ${indexNote.title()}',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: currentSliderValue,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
+                                  children: [
+                                    SizedBox(
+                                      height: 30,
+                                    ),
+                                    Text(
+                                      'Page: ${index + 1} \n',
+                                      style: TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Text(
+                                        'Title: ${indexNote.title()}',
+                                        style: TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
-                                    //Todo : Note Body
+                                    SizedBox(
+                                      height: 30,
+                                    ),
                                     Expanded(
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 5.0, vertical: 5.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30.0, vertical: 8.0),
                                         child: SingleChildScrollView(
                                           scrollDirection: Axis.vertical,
                                           child: Text(
                                             indexNote.noteBody(),
-                                            textAlign: TextAlign.center,
                                             style: TextStyle(
-                                              color: Colors.black,
                                               fontSize: currentSliderValue - 4,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
+                                    )
                                   ],
                                 ),
                               );
                             },
-                            staggeredTileBuilder: (index) =>
-                                StaggeredTile.fit(1),
-                          ),
-                        ),
+                          );
+                        },
                       ),
                     ),
                   ),
