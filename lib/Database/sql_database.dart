@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:note_app_ramy/Database/helper_methods.dart';
 import 'package:note_app_ramy/Database/note_class.dart';
 import 'package:sqflite/sqflite.dart';
@@ -10,6 +9,7 @@ class DBProvider {
   static final DBProvider db = DBProvider._();
   static Database? _database;
 
+  // ignore: non_constant_identifier_names
   static String DatabaseName = 'noteApp.db';
 
   Future<Database> get database async {
@@ -65,12 +65,14 @@ class DBProvider {
 
   /// get all note
   Future<void> getAllNote() async {
+    // ignore: avoid_print
     print('getAllNote executed');
     final db = await database;
     var res = await db.query("Note");
 
     allNote = [];
 
+    // ignore: avoid_function_literals_in_foreach_calls
     res.forEach((element) {
       allNote.add(Note.fromJson(element));
     });

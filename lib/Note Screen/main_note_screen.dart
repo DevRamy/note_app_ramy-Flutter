@@ -3,12 +3,14 @@ import 'package:note_app_ramy/Constant/constant_colors.dart';
 import 'package:note_app_ramy/Database/note_class.dart';
 import 'package:note_app_ramy/Database/sql_database.dart';
 
+// ignore: must_be_immutable
 class NoteScreen extends StatefulWidget {
   int id;
   String title;
   String noteBody;
   String dateTime;
 
+  // ignore: use_key_in_widget_constructors
   NoteScreen(
       {required this.id,
       required this.title,
@@ -146,6 +148,7 @@ class _NoteScreenState extends State<NoteScreen> {
                       noteBody: widget.noteBody),
                 );
               } catch (e) {
+                // ignore: avoid_print
                 print(e);
               }
 

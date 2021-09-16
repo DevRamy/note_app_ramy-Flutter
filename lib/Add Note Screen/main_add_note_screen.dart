@@ -4,6 +4,7 @@ import 'package:note_app_ramy/Constant/constant_colors.dart';
 import 'package:note_app_ramy/Database/note_class.dart';
 import 'package:note_app_ramy/Database/sql_database.dart';
 
+// ignore: use_key_in_widget_constructors
 class AddNoteScreen extends StatefulWidget {
   @override
   _AddNoteScreenState createState() => _AddNoteScreenState();
@@ -29,6 +30,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
           ),
         ),
         body: Container(
+          // ignore: prefer_const_constructors
           padding: EdgeInsets.all(8.0),
           color: kThemColor,
           child: Column(
@@ -51,6 +53,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
               Expanded(
                 flex: 10,
                 child: Container(
+                  // ignore: prefer_const_constructors
                   padding: EdgeInsets.all(8.0),
                   // ignore: prefer_const_constructors
                   decoration: BoxDecoration(
